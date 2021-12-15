@@ -2,25 +2,23 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const express = require("express");
 const app = express();
 
-const typeDefs = gql`
-  type Query {
-    greetings: String
-  }
-`;
+const typeDefs = require("./src/schema");
+const resolvers = require("./src/resolvers");
+const models = require("./models");
 
-const resolvers = {
-  Query: {
-    greetings: () => "Hello EMS APP",
-  },
-};
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    return { models };
+  },
 });
 
 const startUp = async () => {
   await server.start();
+  await models.sequelize.authenticate();
+  models.sequelize.sync();
   const app = express();
   server.applyMiddleware({ app, path: "/api" });
 
