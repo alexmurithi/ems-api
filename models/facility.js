@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Facility.hasMany(models.Scope);
       Facility.hasMany(models.Auditor);
+      Facility.hasMany(models.MeterReading);
     }
   }
   Facility.init(

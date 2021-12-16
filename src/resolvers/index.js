@@ -1,4 +1,8 @@
-module.exports = {
+const dateScalar = require("../../utils/customDate");
+
+const resolvers = {
+  Date: dateScalar,
+
   Query: {
     scopes: async (_, __, { models }) => {
       return models.Scope.findAll();
@@ -12,6 +16,9 @@ module.exports = {
     loads: async (_, __, { models }) => {
       return models.Load.findAll();
     },
+    meterReadings: async (_, __, { models }) => {
+      return models.MeterReading.findAll();
+    },
   },
   Facility: {
     async scopes(facility) {
@@ -19,6 +26,9 @@ module.exports = {
     },
     async auditors(facility) {
       return facility.getAuditors();
+    },
+    async meterReadings(facility) {
+      return facility.getMeterReadings();
     },
   },
   Scope: {
@@ -39,4 +49,11 @@ module.exports = {
       return load.getScopes();
     },
   },
+  MeterReading: {
+    async facility(meterreading) {
+      return meterreading.getFacility();
+    },
+  },
 };
+
+module.exports = resolvers;

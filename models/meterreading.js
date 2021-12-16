@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class MeterReading extends Model {
     /**
@@ -11,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      MeterReading.belongsTo(models.Facility);
     }
-  };
+  }
   MeterReading.init(
     {
       startDate: { type: DataTypes.DATE, allowNull: false },
