@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Load.belongsToMany(models.Scope, { through: "loadScopes" });
     }
   }
   Load.init(

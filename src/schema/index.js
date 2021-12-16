@@ -11,7 +11,15 @@ const typeDefs = gql`
     id: ID!
     name: String!
     noOfOccupants: Int
-    facility: Facility
+    facility: Facility!
+    loads: [Load!]!
+  }
+
+  type Load {
+    id: ID!
+    name: String!
+    powerRatings: Float!
+    scopes: [Scope]
   }
 
   type Auditor {
@@ -27,6 +35,7 @@ const typeDefs = gql`
     scopes: [Scope!]!
     facilities: [Facility!]!
     auditors: [Auditor!]!
+    loads: [Load!]!
   }
 `;
 
