@@ -14,7 +14,6 @@ module.exports = {
       },
       noOfOccupants: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       facilityId: {
         type: Sequelize.INTEGER.UNSIGNED,

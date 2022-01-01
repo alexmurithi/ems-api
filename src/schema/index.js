@@ -6,6 +6,7 @@ const typeDefs = gql`
   type Facility {
     id: ID!
     name: String!
+    meterNo: Int!
     scopes: [Scope!]!
     auditors: [Auditor!]!
     meterReadings: [MeterReading!]!
@@ -49,6 +50,46 @@ const typeDefs = gql`
     auditors: [Auditor!]!
     loads: [Load!]!
     meterReadings: [MeterReading!]!
+  }
+
+  type Mutation {
+    addFacility(name: String!, meterNo: String!): facilityAddResponse!
+
+    updateFacility(
+      id: Int!
+      name: String
+      meterNo: Int
+    ): facilityUpdateResponse!
+
+    deleteFacility(id: Int!): String
+
+    addScope(name: String!, noOfOccupants: Int, facilityId: Int!): Scope
+
+    registerAuditor(
+      fullName: String!
+      email: String!
+      password: String!
+      regNo: Int
+      facilityId: Int!
+    ): registerAuditorResponse!
+  }
+
+  type facilityUpdateResponse {
+    success: Boolean!
+    message: String!
+    facility: Facility
+  }
+
+  type facilityAddResponse {
+    success: Boolean!
+    message: String!
+    facility: Facility
+  }
+
+  type registerAuditorResponse {
+    success: Boolean!
+    message: String!
+    auditor: Auditor
   }
 `;
 

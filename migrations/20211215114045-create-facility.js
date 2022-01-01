@@ -13,7 +13,7 @@ module.exports = {
         allowNull:false
       },
       meterNo: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull:false
       },
       createdAt: {

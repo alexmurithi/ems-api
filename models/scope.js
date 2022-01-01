@@ -15,8 +15,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Scope.init(
     {
-      name: { type: DataTypes.STRING, allowNull: false },
-      noOfOccupants: { type: DataTypes.INTEGER, allowNull: false },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true },
+      },
+      noOfOccupants: { type: DataTypes.INTEGER },
       facilityId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {

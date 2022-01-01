@@ -1,11 +1,10 @@
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
 const app = express();
 
 const typeDefs = require("./src/schema");
 const resolvers = require("./src/resolvers");
 const models = require("./models");
-
 
 const server = new ApolloServer({
   typeDefs,

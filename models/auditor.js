@@ -14,10 +14,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   Auditor.init(
     {
-      email: { type: DataTypes.STRING, allowNull: false },
-      password: { type: DataTypes.STRING, allowNull: false },
-      regNo: DataTypes.STRING,
-      fullName: { type: DataTypes.STRING, allowNull: false },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          notEmpty: true,
+          isEmail: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true },
+      },
+      regNo: { type: DataTypes.STRING, validate: { notEmpty: true } },
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true },
+      },
       facilityId: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     },
     {

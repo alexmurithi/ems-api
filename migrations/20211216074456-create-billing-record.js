@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      endDATE: {
+      endDate: {
         type: Sequelize.DATE,
         allowNull: false,
       },

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       month: { type: DataTypes.STRING },
       startDate: { type: DataTypes.DATE, allowNull: false },
-      endDATE: { type: DataTypes.DATE, allowNull: false },
+      endDate: { type: DataTypes.DATE, allowNull: false },
       totalConsumption: { type: DataTypes.FLOAT, allowNull: false },
       amountPaid: { type: DataTypes.FLOAT, allowNull: false },
       facilityId: { type: DataTypes.INTEGER, allowNull: false },
