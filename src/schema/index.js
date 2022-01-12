@@ -7,6 +7,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     meterNo: Int!
+    createdAt: Date!
     scopes: [Scope!]!
     auditors: [Auditor!]!
     meterReadings: [MeterReading!]!
@@ -31,7 +32,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     fullName: String!
-    regNo: String!
+    regNo: String
     facility: Facility!
   }
 
@@ -40,7 +41,9 @@ const typeDefs = gql`
     startDate: Date!
     endDate: Date!
     month: String
+    year: Int!
     consumption: Float!
+    createdAt: Date!
     facility: Facility!
   }
 
@@ -50,10 +53,33 @@ const typeDefs = gql`
     auditors: [Auditor!]!
     loads: [Load!]!
     meterReadings: [MeterReading!]!
+    me(id: Int!): Auditor
   }
 
   type Mutation {
-    addFacility(name: String!, meterNo: String!): facilityAddResponse!
+    addFacility(name: String!, meterNo: Int!): Facility!
+
+    login(email: String!, password: String!): AuthPayload!
+
+    importMeterReadings(
+      startDate: [Date!]!
+      endDate: [Date!]!
+      year: [Int!]!
+      month: [String!]!
+      consumption: [Float!]!
+      facilityId: [Int!]!
+    ): [MeterReading!]!
+
+    addMeterReading(
+      startDate: Date!
+      endDate: Date!
+      month: String
+      year: Int!
+      consumption: Float!
+      facilityId: Int!
+    ): MeterReading!
+
+    deleteMeterReading(id: Int!): String
 
     updateFacility(
       id: Int!
@@ -71,7 +97,7 @@ const typeDefs = gql`
       password: String!
       regNo: Int
       facilityId: Int!
-    ): registerAuditorResponse!
+    ): registerAuditorResponse
   }
 
   type facilityUpdateResponse {
@@ -89,7 +115,12 @@ const typeDefs = gql`
   type registerAuditorResponse {
     success: Boolean!
     message: String!
-    auditor: Auditor
+    auditor: Auditor!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: Auditor!
   }
 `;
 

@@ -22,6 +22,7 @@ const readings = details.map((reading) => ({
   endDate: reading.endDate,
   consumption: faker.datatype.float(),
   month: faker.date.month(),
+  year: 2021,
   facilityId: 1,
   createdAt: faker.date.recent(),
   updatedAt: faker.date.recent(),

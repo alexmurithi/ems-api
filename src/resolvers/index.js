@@ -1,5 +1,6 @@
 const dateScalar = require("../../utils/customDate");
 const bcrypt = require("bcrypt");
+const jsonwebtoken = require("jsonwebtoken");
 
 const resolvers = {
   Date: dateScalar,
@@ -21,6 +22,17 @@ const resolvers = {
     meterReadings: async (_, __, { models }) => {
       return models.MeterReading.findAll();
     },
+    me: async (_, { id }, { models }) => {
+      try {
+        const user = await models.Auditor.findOne({ where: { id: id } });
+        if (!user) {
+          throw new Error("Error: Cant find this User!");
+        }
+        return user;
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
   },
 
   //MUTATIONS//
@@ -28,7 +40,7 @@ const resolvers = {
   Mutation: {
     async addFacility(_, { name, meterNo }, { models }) {
       try {
-        if (name === "" || meterNo === "") {
+        if (name === "" || meterNo === null) {
           throw new Error("All Fields are Required!");
         }
         const facility = await models.Facility.create({
@@ -36,17 +48,61 @@ const resolvers = {
           meterNo,
         });
 
-        if (facility) {
-          return {
-            facility,
-            success: true,
-            message: "Facility Added Successfully!",
-          };
+        return facility;
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+
+    //LOGIN//
+    async login(_, { email, password }, { models }) {
+      try {
+        if (email === "" || password === "") {
+          throw new Error("Email or Password cannot be empty!");
         }
+        const user = await models.Auditor.findOne({ where: { email: email } });
+
+        if (!user) {
+          throw new Error("No User associated with this Email!");
+        }
+
+        const isValid = await bcrypt.compareSync(password, user.password);
+
+        if (!isValid) {
+          throw new Error("Incorrect password!");
+        }
+
+        const token = jsonwebtoken.sign(
+          { id: user.id, email: user.email },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
         return {
-          success: false,
-          message: "OOPS! Facility not Added!",
+          token,
+          user,
         };
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+
+    //ADD METER READING//
+    async addMeterReading(
+      _,
+      { startDate, endDate, month, year, consumption, facilityId },
+      { models }
+    ) {
+      try {
+        const reading = await models.MeterReading.create({
+          startDate,
+          endDate,
+          month,
+          year,
+          consumption,
+          facilityId,
+        });
+        return reading;
       } catch (err) {
         throw new Error(err.message);
       }
@@ -101,6 +157,20 @@ const resolvers = {
       }
     },
 
+    //IMPORT METER READINGS//
+    async importMeterReadings(
+      _,
+      { startDate, endDate, year, month, consumption, facilityId },
+      { models }
+    ) {
+      try {
+        const doneData = await models.MeterReading.bulkCreate([]);
+        return doneData;
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+
     //UPDATE FACILITY//
     async updateFacility(_, { id, name, meterNo }, { models }) {
       try {
@@ -129,6 +199,17 @@ const resolvers = {
         const item = await models.Facility.destroy({ where: { id: id } });
         if (item) {
           return "Facility Delete Successfully!";
+        }
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+    //Delete MeterReading//
+    async deleteMeterReading(_, { id }, { models }) {
+      try {
+        const item = await models.MeterReading.destroy({ where: { id: id } });
+        if (item) {
+          return "Meter Reading Deleted Successfully!";
         }
       } catch (err) {
         throw new Error(err.message);
