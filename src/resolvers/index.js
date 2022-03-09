@@ -54,7 +54,19 @@ const resolvers = {
       }
     },
 
-    //LOGIN//
+    async newLoad(_, { name, powerRatings }, { models }) {
+      try {
+        const load = await models.Load.create({
+          name,
+          powerRatings,
+        });
+        return load;
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+
+    //LOGIN USER BY EMAIL AND PASSWORD//
     async login(_, { email, password }, { models }) {
       try {
         if (email === "" || password === "") {
@@ -75,7 +87,7 @@ const resolvers = {
         const token = jsonwebtoken.sign(
           { id: user.id, email: user.email },
           process.env.JWT_SECRET,
-          { expiresIn: "1h" }
+          { expiresIn: "1hr" }
         );
 
         return {
@@ -109,15 +121,19 @@ const resolvers = {
     },
 
     //ADD SCOPE MUTATION//
-    async addScope(_, { name, noOfOccupants, facilityId }, { models }) {
+    async newScope(_, { name, noOfOccupants, facilityId }, { models }) {
       try {
-        do {
-          return models.Scope.create({
+        const scope = await models.Scope.create(
+          {
+            facilityId,
             name,
             noOfOccupants,
-            facilityId,
-          });
-        } while (name !== "" || facilityId !== null);
+          },
+         
+        );
+        if (scope) {
+          return scope;
+        }
       } catch (err) {
         throw new Error(err.message);
       }
@@ -193,6 +209,31 @@ const resolvers = {
       }
     },
 
+    //UPDATE LOAD//
+    async editLoad(_, { id, name, powerRatings }, { models }) {
+      try {
+        const load = await models.Load.update(
+          {
+            name,
+            powerRatings,
+          },
+          { where: { id: id } }
+        );
+        if (load) {
+          return {
+            success: true,
+            message: "Item updated Successfully !",
+          };
+        }
+        return {
+          success: false,
+          message: "Item could not be updated !",
+        };
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+
     //DELETE FACILITY//
     async deleteFacility(_, { id }, { models }) {
       try {
@@ -211,6 +252,25 @@ const resolvers = {
         if (item) {
           return "Meter Reading Deleted Successfully!";
         }
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+
+    //Delete Load//
+    async deleteLoad(_, { id }, { models }) {
+      try {
+        const load = await models.Load.destroy({ where: { id: id } });
+        if (load) {
+          return {
+            success: true,
+            message: "Item deleted Successfully",
+          };
+        }
+        return {
+          success: false,
+          message: "Item could not be deleted!",
+        };
       } catch (err) {
         throw new Error(err.message);
       }

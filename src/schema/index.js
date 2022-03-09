@@ -16,6 +16,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     noOfOccupants: Int
+    createdAt: Date!
     facility: Facility!
     loads: [Load!]!
   }
@@ -24,6 +25,8 @@ const typeDefs = gql`
     id: ID!
     name: String!
     powerRatings: Float!
+    createdAt: Date!
+    updatedAt: Date!
     scopes: [Scope]
   }
 
@@ -58,6 +61,10 @@ const typeDefs = gql`
 
   type Mutation {
     addFacility(name: String!, meterNo: Int!): Facility!
+    newLoad(name: String!, powerRatings: Float!): Load!
+    newScope(facilityId: Int!, name: String!, noOfOccupants: Int): Scope!
+    editLoad(id: Int!, name: String, powerRatings: Float): UpdateResponse!
+    deleteLoad(id: Int!): DeleteResponse!
 
     login(email: String!, password: String!): AuthPayload!
 
@@ -121,6 +128,15 @@ const typeDefs = gql`
   type AuthPayload {
     token: String!
     user: Auditor!
+  }
+
+  type DeleteResponse {
+    success: Boolean
+    message: String
+  }
+  type UpdateResponse {
+    success: Boolean!
+    message: String!
   }
 `;
 

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Facility.hasMany(models.Scope,{onUpdate:"CASCADE"});
+      Facility.hasMany(models.Scope);
       Facility.hasMany(models.Auditor, { onUpdate: "CASCADE" });
       Facility.hasMany(models.MeterReading, { onUpdate: "CASCADE" });
     }
