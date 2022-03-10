@@ -15,4 +15,12 @@ module.exports = {
     host: process.env.DB_TEST_HOST,
     dialect: "mysql",
   },
+  production: {
+    username: process.env.DB_PROD_USERNAME,
+    password: process.env.DB_PROD_PASSWORD,
+    database: process.env.DB_PROD_DBNAME,
+    host: process.env.DB_PROD_HOST,
+    port:process.env.DB_PROD_PORT,
+    dialect: "mysql",
+  },
 };
