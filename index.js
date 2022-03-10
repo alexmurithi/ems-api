@@ -1,4 +1,7 @@
 const { ApolloServer } = require("apollo-server-express");
+const {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("apollo-server-core");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
@@ -25,6 +28,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   context: ({ req }) => {
     const token = req.headers.authorization || "";
     return { models, user: getUser(token.replace("Bearer ", "")) };
