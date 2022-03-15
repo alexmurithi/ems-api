@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Facility.hasMany(models.Scope);
-      Facility.hasMany(models.Auditor, { onUpdate: "CASCADE" });
-      Facility.hasMany(models.MeterReading, { onUpdate: "CASCADE" });
+      Facility.hasMany(models.Scope, { onDelete: "CASCADE" });
+      Facility.hasMany(models.Auditor, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      });
+      Facility.hasMany(models.MeterReading, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      });
     }
   }
   Facility.init(
@@ -22,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: { notEmpty: true },
       },
       meterNo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         unique: true,
       },
