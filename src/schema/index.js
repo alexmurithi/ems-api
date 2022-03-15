@@ -6,7 +6,7 @@ const typeDefs = gql`
   type Facility {
     id: ID!
     name: String!
-    meterNo: Int!
+    meterNo: String!
     createdAt: Date!
     scopes: [Scope!]!
     auditors: [Auditor!]!
