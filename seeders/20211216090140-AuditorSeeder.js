@@ -8,6 +8,7 @@ const details = [
   { name: "Anthony Chemase", regNo: "EC/1002/17" },
   { name: "Japheth Kipkemei", regNo: "EC/1005/17" },
   { name: "Purity Mukongolo", regNo: "TLE/21/13" },
+  { name: "Dennis Kurgat", regNo: "EC/1003/17" },
 ];
 const auditors = details.map((detail) => ({
   fullName: detail.name,
