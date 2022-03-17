@@ -7,6 +7,20 @@ const resolvers = {
 
   //QUERIES//
   Query: {
+    energies: async (_, __, { models }) => {
+      try {
+        return models.Energy.findAll();
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    },
+  //   energyUse: async (_, __, { models }) => {
+  //    try {
+  //      return models.Energy.findAll();
+  //    } catch (err) {
+  //      throw new Error(err.message);
+  //    }
+  //  },
     scopes: async (_, __, { models }) => {
       return models.Scope.findAll();
     },
@@ -123,14 +137,11 @@ const resolvers = {
     //ADD SCOPE MUTATION//
     async newScope(_, { name, noOfOccupants, facilityId }, { models }) {
       try {
-        const scope = await models.Scope.create(
-          {
-            facilityId,
-            name,
-            noOfOccupants,
-          },
-         
-        );
+        const scope = await models.Scope.create({
+          facilityId,
+          name,
+          noOfOccupants,
+        });
         if (scope) {
           return scope;
         }
@@ -276,6 +287,13 @@ const resolvers = {
       }
     },
   },
+
+  Energy: {
+    async scopes(energy) {
+      return energy.getScopes();
+    },
+  },
+
   Facility: {
     async scopes(facility) {
       return facility.getScopes();

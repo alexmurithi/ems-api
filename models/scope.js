@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Scope.belongsTo(models.Facility);
       Scope.belongsToMany(models.Load, { through: "loadScopes" });
+      Scope.belongsToMany(models.Energy, { through: "energyScopes" });
     }
   }
   Scope.init(

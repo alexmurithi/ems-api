@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Load.belongsToMany(models.Scope, {
         through: "loadScopes",
-        onDelete: "CASCADE",
       });
     }
   }

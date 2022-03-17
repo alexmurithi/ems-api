@@ -3,6 +3,14 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
   scalar Date
 
+  type Energy {
+    id: ID!
+    type: String!
+    createdAt: Date!
+    updatedAt: Date!
+    scopes: [Scope!]!
+  }
+
   type Facility {
     id: ID!
     name: String!
@@ -50,6 +58,11 @@ const typeDefs = gql`
     facility: Facility!
   }
 
+  type EnergyUse {
+    load: Load!
+    scope: Scope!
+  }
+
   type Query {
     scopes: [Scope!]!
     facilities: [Facility!]!
@@ -57,6 +70,8 @@ const typeDefs = gql`
     loads: [Load!]!
     meterReadings: [MeterReading!]!
     me(id: Int!): Auditor
+    energies: [Energy!]!
+    energyUse: [EnergyUse]
   }
 
   type Mutation {

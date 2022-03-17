@@ -10,14 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Facility.hasMany(models.Scope, { onDelete: "CASCADE" });
-      Facility.hasMany(models.Auditor, {
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      });
-      Facility.hasMany(models.MeterReading, {
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      });
+      Facility.hasMany(models.Auditor);
+      Facility.hasMany(models.MeterReading);
     }
   }
   Facility.init(
